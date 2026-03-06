@@ -1,0 +1,3 @@
+supabase
+python-docx
+python-dotenv
