@@ -6,6 +6,7 @@ from processor import NoteProcessor
 
 load_dotenv()
 
+# Initialize FastAPI app
 app = FastAPI(
     title="Meeting Notes API",
     description="API to automatically generate meeting notes using Gemini."
@@ -29,10 +30,25 @@ async def process_pending_meetings(background_tasks: BackgroundTasks):
         return {"status": "error", "message": "Server configuration error (missing Supabase keys)."}
 
     background_tasks.add_task(processor.process_all_pending)
-
+    
     return {
-        "status": "success",
+        "status": "success", 
         "message": "Started processing pending meetings in the background. Check server logs for progress."
+    }
+
+@app.post("/api/process-meeting/{meeting_id}")
+async def process_single_meeting(meeting_id: str, background_tasks: BackgroundTasks):
+    """
+    Endpoint to process a single meeting by its UUID.
+    """
+    if not processor:
+        return {"status": "error", "message": "Server configuration error (missing Supabase keys)."}
+
+    background_tasks.add_task(processor.process_meeting, meeting_id)
+    
+    return {
+        "status": "success", 
+        "message": f"Started processing meeting {meeting_id} in the background. Check server logs for progress."
     }
 
 @app.get("/api/health")
