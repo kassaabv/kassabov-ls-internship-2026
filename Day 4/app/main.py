@@ -107,6 +107,24 @@ def chunk_transcript_recursive(text: str, max_chars: int = 5000, overlap: int = 
 
     return chunks
 
+def extract_date_from_title(title: str, default_year: int = 2025) -> str:
+    from datetime import datetime
+    import re
+    pattern = r"(?i)(january|february|march|april|may|june|july|august|september|october|november|december|jan|feb|mar|apr|jun|jul|aug|sept|sep|oct|nov|dec)\s+(\d{1,2})"
+    match = re.search(pattern, title)
+    if match:
+        month_str = match.group(1).capitalize()
+        if month_str == 'Sept':
+            month_str = 'Sep'
+        day_str = match.group(2)
+        for fmt in ("%B %d %Y", "%b %d %Y"):
+            try:
+                dt = datetime.strptime(f"{month_str} {day_str} {default_year}", fmt)
+                return dt.strftime("%Y-%m-%d")
+            except ValueError:
+                continue
+    return datetime.now().replace(year=default_year).strftime("%Y-%m-%d")
+
 def process_bulk_import_background(payload: GoogleDocBulkImport):
     from datetime import datetime
     
@@ -121,7 +139,7 @@ def process_bulk_import_background(payload: GoogleDocBulkImport):
                 logger.error(f"Failed to fetch doc {url}: {error}")
                 continue
                 
-            meeting_date = datetime.now().replace(year=2025).strftime("%Y-%m-%d")
+            meeting_date = extract_date_from_title(title)
             
             chunks = chunk_transcript_recursive(content)
             
