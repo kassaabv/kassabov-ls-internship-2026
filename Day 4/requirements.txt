@@ -1,0 +1,7 @@
+supabase
+python-docx
+python-dotenv
+google-genai
+pydantic
+fastapi
+uvicorn
