@@ -149,7 +149,8 @@ class NoteProcessor:
                 "action_items": structured_notes['action_items'],
                 "key_takeaways": structured_notes['key_takeaways'],
                 "topics": structured_notes['topics'],
-                "next_steps": structured_notes['next_steps']
+                "next_steps": structured_notes['next_steps'],
+                "llm_raw": raw_llm
             }
             
             if existing.data:
