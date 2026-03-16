@@ -145,13 +145,11 @@ class NoteProcessor:
         if structured_notes:
             note_data = {
                 "meeting_id": canonical_id,
-                "project": project,
                 "summary": structured_notes['summary'],
                 "action_items": structured_notes['action_items'],
                 "key_takeaways": structured_notes['key_takeaways'],
                 "topics": structured_notes['topics'],
-                "next_steps": structured_notes['next_steps'],
-                "llm_raw": raw_llm
+                "next_steps": structured_notes['next_steps']
             }
             
             if existing.data:

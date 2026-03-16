@@ -121,7 +121,7 @@ def process_bulk_import_background(payload: GoogleDocBulkImport):
                 logger.error(f"Failed to fetch doc {url}: {error}")
                 continue
                 
-            meeting_date = datetime.now().strftime("%Y-%m-%d")
+            meeting_date = datetime.now().replace(year=2025).strftime("%Y-%m-%d")
             
             chunks = chunk_transcript_recursive(content)
             
